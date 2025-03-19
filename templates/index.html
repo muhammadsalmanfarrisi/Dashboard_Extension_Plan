@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Action Plan Pendapatan 2025</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 700;
+            text-align: center;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background-color: #4a90e2;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #357abd;
+        }
+        .table {
+            font-size: 0.9rem;
+        }
+        .form-inline .form-group {
+            margin-right: 15px;
+        }
+        .chart-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;  /* Makes the container responsive */
+            height: 600px; /* Adjust the height as needed */
+        }
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+        .percentage-change {
+            font-size: 1.2rem; /* Increased font size for better visibility */
+            font-weight: 600;
+        }
+
+        .difference {
+            font-size: 1.5rem; /* Larger font size for the actual difference */
+            font-weight: 700;
+            margin-left: 0px;
+        }
+        .total-sw {
+        font-size: 2rem; /* Sesuaikan ukuran sesuai kebutuhan */
+        font-weight: bold;
+        color: #333;
+    }
+    /* Header Styling */
+    .header {
+        background-color: #343a40;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        position: relative; /* Default behavior */
+    }
+
+    .header a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .header a:hover {
+        text-decoration: underline;
+    }
+
+    /* Optional Body Styling */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f7f9fc;
+        color: #333;
+        margin: 0; /* Ensure no margin around the body */
+        padding: 0;
+    }
+    
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+        h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    /* Tabel styling */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Header */
+    .table thead th {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 12px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Body */
+    .table tbody tr {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        transform: scale(1.02);
+    }
+
+    /* Table cells */
+    .table td {
+        padding: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Kolom angka lebih mencolok */
+    .rupiah-value {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    /* Rounded corners for bottom */
+    .table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+    }
+
+    .table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+    }
+
+    .link-tambah {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #1D976C, #93F9B9); /* Gradasi hijau premium */
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 50px; /* Membuat tampilan premium */
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .link-tambah i {
+        margin-right: 10px; /* Jarak ikon dengan teks */
+        font-size: 20px;
+    }
+
+    /* Hover Effect */
+    .link-tambah:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Efek Klik */
+    .link-tambah:active {
+        transform: scale(0.98);
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        border: none;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Menu Pendapatan SW */
+    .menu-pendapatan {
+        background: linear-gradient(135deg, #28a745, #218838); /* Gradasi hijau */
+    }
+
+    .menu-pendapatan:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #218838, #1e7e34); /* Warna lebih gelap saat hover */
+    }
+
+    /* Menu Action Plan */
+    .menu-action-plan {
+        background: linear-gradient(135deg, #ffc107, #e0a800); /* Gradasi emas */
+    }
+
+    .menu-action-plan:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #e0a800, #d39e00); /* Warna lebih gelap saat hover */
+    }
+
+    /* Styling ikon */
+    .menu-link i {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+    
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <p>Developed by <strong>Team Asuransi Jasa Raharja Jawa Tengah</strong></p>
+        <p><a href="https://github.com/muhammadsalmanfarrisi?tab=repositories" target="_blank">GitHub Repository</a> | <a href="https://wa.me/+6285747931816">Contact Us</a></p>
+    </div>
+    
+    <div class="container mt-5">
+        <h1>Dashboard Action Plan Pendapatan 2025</h1>
+
+        <a href="#" class="menu-link menu-pendapatan">
+            <i class="fas fa-chart-line"></i> Pendapatan SW
+          </a>
+          
+          <!-- Link Menu Action Plan -->
+          <a href="#" class="menu-link menu-action-plan">
+            <i class="fas fa-tasks"></i> Action Plan
+          </a>
+        <form method="POST" class="mt-5">
+            
+                      
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label for="start_date_2024">Start Date {{ current_year }}</label>
+                    <small class="form-text text-muted">Masukkan tanggal mulai pada tahun {{ current_year }}</small>
+
+                    <input type="date" class="form-control" id="start_date_2024" name="start_date_2024" value="{{ start_date_2024 | default(current_year ~ '-01-01') }}">
+
+                </div>
+                <div class="col-md-6">
+                    <label for="end_date_2024">End Date {{ current_year }}</label>
+                    <small class="form-text text-muted">Masukkan tanggal selesai pada tahun {{ current_year }}</small>
+
+                    <input type="date" class="form-control" id="end_date_2024" name="end_date_2024" value="{{ today }}">
+
+
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-4" name="form_type" value="form1">Tampilkan Data</button>
+        </form>
+
+    
+    <div class="container my-5">
+        {% if data_2023 or data_2024 %}
+        <h1>OPERASI GABUNGAN</h1>
+        
+        
+        <a href="https://ceri.jasaraharja.co.id/survey" class="link-tambah" target="_blank">
+            <i class="fas fa-plus-circle"></i> Tambah Data
+          </a>
+            
+            <h2>Data {{ current_year }}</h2>
+            <div class="table-container p-3">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Kode Kantor</th>
+                            <th>Nama Kantor</th>
+                            <th>Target</th>
+                            <th>Realisasi</th>
+                            <th>Real (%)</th>
+                            <th>Jumlah Nopol</th>
+                            <th>OS SW Before</th>
+                            <th>OS SW After</th>
+                            <th>SW Terkutip</th>
+                            <th>SW Terkutip (%)</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data_2024 %}
+                        <tr>
+                            <td>{{ item.kode_kantor }}</td>
+                            <td>{{ item.nama_kantor }}</td>
+                            <td>{{ item.target }}</td>
+                            <td>{{ item.realisasi }}</td>
+                            <td>{{ item.real_persen }}%</td>
+                            <td>{{ item.jml_nopol }}</td>
+                            <td>{{ format_rupiah(item.os_sw_before) }}</td>
+                            <td>{{ format_rupiah(item.os_sw_after) }}</td>
+                            <td>{{ format_rupiah(item.sw_terkutip) }}</td>
+                            <td>{{ item.sw_terkutip_persen }} %</td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+    <div class="container my-5">
+        {% if data_2023_sigap_instansi or data_2024_sigap_instansi %}
+        <h1>CRM SIGAP (SIGAP INSTANSI)</h1>
+            
+        
+        <a href="https://ceri.jasaraharja.co.id/survey" class="link-tambah" target="_blank">
+            <i class="fas fa-plus-circle"></i> Tambah Data
+          </a>
+            
+            <h2>Data {{ current_year }}</h2>
+
+            
+            <div class="table-container p-3">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Kode Kantor</th>
+                            <th>Nama Kantor</th>
+                            <th>Jumlah Nopol</th>
+                            <th>OS SW Before</th>
+                            <th>OS SW After</th>
+                            <th>SW Terkutip</th>
+                            <th>SW Terkutip (%)</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data_2024_sigap_instansi %}
+                        <tr>
+                            <td>{{ item.kode_kantor }}</td>
+                            <td>{{ item.nama_kantor }}</td>
+                            <td>{{ item.jml_nopol }}</td>
+                            <td>{{ format_rupiah(item.os_sw_before) }}</td>
+                            <td>{{ format_rupiah(item.os_sw_after) }}</td>
+                            <td>{{ format_rupiah(item.sw_terkutip) }}</td>
+                            <td>{{ item.sw_terkutip_persen }} %</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+    function formatRupiah(value) {
+        return "Rp " + value.toLocaleString("id-ID");
+    }
+
+    // Lakukan format saat rendering halaman jika data berasal dari backend langsung.
+    document.querySelectorAll(".display-4, .rupiah-value").forEach(element => {
+        element.textContent = formatRupiah(parseFloat(element.textContent.replace(/[^0-9.-]+/g,"")));
+    });
+    
+</script>
+<script>
+    // Fungsi untuk mengatur sinkronisasi tanggal antar tahun
+    function syncDatesMutually(sourceId, targetId, yearOffset) {
+        const sourceInput = document.getElementById(sourceId);
+        const targetInput = document.getElementById(targetId);
+
+        function updateTarget() {
+            const sourceDate = new Date(sourceInput.value);
+            if (!isNaN(sourceDate)) {
+                const targetDate = new Date(sourceDate);
+                targetDate.setFullYear(sourceDate.getFullYear() + yearOffset);
+                targetInput.value = targetDate.toISOString().split('T')[0];
+            }
+        }
+
+        function updateSource() {
+            const targetDate = new Date(targetInput.value);
+            if (!isNaN(targetDate)) {
+                const sourceDate = new Date(targetDate);
+                sourceDate.setFullYear(targetDate.getFullYear() - yearOffset);
+                sourceInput.value = sourceDate.toISOString().split('T')[0];
+            }
+        }
+
+        sourceInput.addEventListener('change', updateTarget);
+        targetInput.addEventListener('change', updateSource);
+    }
+
+    // Sinkronisasi dua arah antara tahun 2023 dan 2024
+    syncDatesMutually('start_date_2023', 'start_date_2024', 1);
+    syncDatesMutually('end_date_2023', 'end_date_2024', 1);
+</script>
+<script>
+    var refreshInterval;
+
+    // Fungsi untuk memulai auto-refresh
+    function startAutoRefresh() {
+        refreshInterval = setInterval(function () {
+            // Simpan posisi scroll sebelum refresh
+            localStorage.setItem('scrollPosition', window.scrollY);
+            location.reload();
+        }, 60000); // Refresh setiap 1 detik
+        document.getElementById('startRefreshBtn').style.display = 'none';
+        document.getElementById('stopRefreshBtn').style.display = 'inline-block';
+
+        // Simpan status auto-refresh di localStorage
+        localStorage.setItem('autoRefresh', 'true');
+    }
+
+    // Fungsi untuk menghentikan auto-refresh
+    function stopAutoRefresh() {
+        clearInterval(refreshInterval);
+        document.getElementById('startRefreshBtn').style.display = 'inline-block';
+        document.getElementById('stopRefreshBtn').style.display = 'none';
+
+        // Hapus status auto-refresh dari localStorage
+        localStorage.removeItem('autoRefresh');
+    }
+
+    // Fungsi untuk memulihkan posisi scroll
+    function restoreScrollPosition() {
+        const savedPosition = localStorage.getItem('scrollPosition');
+        if (savedPosition !== null) {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+        }
+        // Hapus posisi scroll setelah dipulihkan
+        localStorage.removeItem('scrollPosition');
+    }
+
+    // Event listener tombol Start Refresh
+    document.getElementById('startRefreshBtn').addEventListener('click', startAutoRefresh);
+
+    // Event listener tombol Stop Refresh
+    document.getElementById('stopRefreshBtn').addEventListener('click', stopAutoRefresh);
+
+    // Cek status auto-refresh dan posisi scroll saat halaman dimuat
+    window.onload = function () {
+        restoreScrollPosition(); // Pulihkan posisi scroll
+
+        if (localStorage.getItem('autoRefresh') === 'true') {
+            startAutoRefresh(); // Mulai auto-refresh jika status tersimpan di localStorage
+        }
+
+        // Tangani form resubmission (jika diperlukan)
+        if (window.performance && window.performance.navigation.type === 2) {
+            setTimeout(function () {
+                document.querySelector('button[type="submit"]').click(); // Submit form otomatis
+            }, 500); // Sesuaikan delay jika diperlukan
+        }
+    };
+</script>
+<script>
+    function formatRupiah(value) {
+        return "Rp " + value.toLocaleString("id-ID");
+    }
+
+    // Lakukan format saat rendering halaman jika data berasal dari backend langsung.
+    document.querySelectorAll(".display-4, .rupiah-value").forEach(element => {
+        element.textContent = formatRupiah(parseFloat(element.textContent.replace(/[^0-9.-]+/g,"")));
+    });
+    
+</script>
+</body>
+</html>
