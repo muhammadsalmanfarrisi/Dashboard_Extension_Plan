@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session
 import requests
 from datetime import datetime
+import datetime
+import pytz
 
 def format_rupiah(value):
     
@@ -17,8 +19,7 @@ app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Gantilah dengan kunci rahasia yang lebih aman
 app.jinja_env.filters['format_rupiah'] = format_rupiah  # Daftarkan filter
 
-def get_default_dates(year):
-    return f"{year}-01-01", f"{year}-12-31"
+
 
 def ambil_data(url, retries=3, timeout=10):
     session = requests.Session()
@@ -127,14 +128,22 @@ def utility_processor():
     
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    current_year = datetime.now().year
+    indonesia_tz = pytz.timezone('Asia/Jakarta')  # WIB (GMT+7), bisa diganti 'Asia/Makassar' untuk WITA, 'Asia/Jayapura' untuk WIT
+    current_year = datetime.datetime.now(indonesia_tz).year
     previous_year = current_year - 1
     
-    today = datetime.today().strftime('%Y-%m-%d')  # Ambil tanggal hari ini
+    
+    today = datetime.datetime.now(indonesia_tz)
+    today_form = datetime.datetime.now(indonesia_tz).strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+    now = datetime.datetime.now(indonesia_tz).date()
+    yesterday = now - datetime.timedelta(days=1)
+
 
     # Default values
     
-    start_date_2024, end_date_2024 = get_default_dates(current_year)
+    
+    start_date_2024 = f"{today.year}-01-01"
+    end_date_2024 = today_form
 
     
     data_2024 = None
@@ -163,7 +172,7 @@ def index():
                            previous_year=previous_year,
                            current_year=current_year,
                            start_date_2024=start_date_2024,
-                           end_date_2024=end_date_2024, today=today,
+                           end_date_2024=end_date_2024, today=today, today_form=today_form,
                            data_2024_sigap_instansi=data_2024_sigap_instansi or [],
                            data_2024=data_2024 or [])
 

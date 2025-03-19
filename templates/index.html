@@ -316,7 +316,7 @@
                     <label for="end_date_2024">End Date {{ current_year }}</label>
                     <small class="form-text text-muted">Masukkan tanggal selesai pada tahun {{ current_year }}</small>
 
-                    <input type="date" class="form-control" id="end_date_2024" name="end_date_2024" value="{{ today }}">
+                    <input type="date" class="form-control" id="end_date_2024" name="end_date_2024" value="{{ end_date_2024 | default(today_form) }}">
 
 
                 </div>
