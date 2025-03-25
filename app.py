@@ -6,13 +6,15 @@ import pytz
 
 
 def format_rupiah(value):
-
     try:
         value = float(value)  # Konversi ke float jika perlu
+        formatted_value = "{:,.2f}".format(
+            value
+        )  # Format angka dengan pemisah ribuan koma
         formatted_value = (
-            "Rp{:,.2f}".format(value).replace(",", ".").replace(".", ",", 1)
-        )
-        return formatted_value
+            formatted_value.replace(",", "X").replace(".", ",").replace("X", ".")
+        )  # Tukar simbol dengan benar
+        return f"Rp{formatted_value}"
     except (ValueError, TypeError):
         return "Rp0,00"
 
@@ -27,13 +29,13 @@ def ambil_data(url, retries=3, timeout=10):
 
     # Masukkan cookies yang relevan dari browser Anda ke sini
     cookies = {
-        "XSRF-TOKEN": "eyJpdiI6Iit6MnRLallCWHg1UnJhZUhpUmhISkE9PSIsInZhbHVlIjoiUElJbFAxNDZhanU3SEplMk5aeVlLV0RnYlJtL0FKdWNydHlhSVNkNmxlQTV3NU5mR3pwS0hWUnBxVUNpb3ZQY3UyYXZtTURsdHUvc3RIZUVpek9JY0JhVTN0NkgwNWRxcXIxVlhXTjZpeHZYeXFkK1ZYR3JUQzljQkQxUXc5bmYiLCJtYWMiOiJhMDIxMDk4NmE4ODZmZWFmMzFjMzMzNTRkZGUxMDVjNGM0MzI0M2YxMmRiM2YxNzY2YWNiYjc2OWUyYTIzZDgwIiwidGFnIjoiIn0%3D",
+        "XSRF-TOKEN": "eyJpdiI6InZ6VHZEZmc2bHk5bzZEd1FwTFJQa1E9PSIsInZhbHVlIjoiMmZYK3VsYnRJYy9wUFJXbGU1TDNWMWpRNWxyOWtQZEJ3N2VLWXVPcGFsYzFwTWtUM0ZWVkxqTHJpUVVsMkhzbzgzVit6OE1KODZWWkJTVlBsOHhvTDQzT0ZwL21XSWJQYTFnM3grZFlkdS9VMUl5dUNuRG1TZWVVenRBdkFaUFIiLCJtYWMiOiI1YmExZjVjYjRmNjEwNjM4OTg1YTE2Y2E2MGMwYWI0ZmM5YjljZTgwZGJhNDljZjNkYjY5NGQ2NzE2YTczYmFjIiwidGFnIjoiIn0%3D",
         "_ga": "GA1.1.140722331.1727057868",
         "_ga_JQ088T32QP": "GS1.1.1727061610.2.1.1727061629.0.0.0",
         "_ga_VNWN27RPNX": "GS1.3.1727061611.2.0.1727061611.60.0.0",
-        "ceri_session": "eyJpdiI6ImlvdCtIMEVESllBc0xJM0Y4RnJENUE9PSIsInZhbHVlIjoiQy9MRGt3ODA5OGlKR21ZUEdnWVhFeldGVzgxZFBONzdMNU5vbHpNdlNOcWoyYk5zY0RDMGVNbHdXQUdDQkJIaDVBRUgvUTRuaE1zckYzMDBKajJVKzJFTWxXL2R0ZGpKR1J0VGFrZVRZQStJRVlmQzJUd1NydStQazA5SDJwUDgiLCJtYWMiOiIxMjY2NDdkNzI3NTgwYWU5OThmYzRjYmIwZDU4NGU4MGJjNDQwNjU1Mzk2MjZlZmVmNDU4MDRiNDg1OTZiMDA2IiwidGFnIjoiIn0%3D",
+        "ceri_session": "eyJpdiI6IllEZjcyMXVkQ1hzWE9YUmdDRnFoUGc9PSIsInZhbHVlIjoiQkZQRUdHVWh4a2NIamhYanNXUFhVTDZwUWdPby9YK3Z0WnpGQThaZGFDQUhyUmJ3dzl6S3NjUVZKSGhOcWtkQ2x4dnRkNzFWMzdwbFp6dzNDaEMvbjBTd1R4czk0UTRtMkt0NW1NMUwwZ3M5d1VXVEZCNnAvbE52SXVHWFVCa24iLCJtYWMiOiI3ZDEwMWQzOGQ1ZDBjZWRkMGQ0NmE5ZTQ4ZmVkZTY1M2U5NzM0Y2Q3ODA3ZmMwNTA0MjYzY2Q0OGNiOTA4NWI5IiwidGFnIjoiIn0%3D",
         "cookiesession1": "678B28C4BA1B09254D21278D87A606A5",
-        "jr_cookie": "98122d81101bed08eedde6cea31edd67",
+        "jr_cookie": "c686aabd2eea2ae0eedde6ceb475e267",
         "remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d": "eyJpdiI6IlEyVEJBcW9Za2tCUFNJWFpvV2VUNGc9PSIsInZhbHVlIjoiM0NwSGwwdUVwbEVhVGtKVm5hdGJSbUxmSlpUQ0JjZkZPL0pFbEE5K3c3WmtPM3RpZHpkaUlhaldXMThRVlQzNnNKNVcxdTdaTDBMdWttOTlOUDd0cmwvQm50WXBiN2lMVlpSV213Umw2d0lpOUNaSzI4TjNoQ0xraENqRmRON3haWU1ROHVrZTlvZTdxdGM2SUtDME5BPT0iLCJtYWMiOiI0MWUxNTY1MjE5YzBiOTAxZmQwYzcwM2RkMzQwMTViYmU0NDI1OTg5MjY1NDgzZDdmYTliNTMwZWMxNDQwOGUyIiwidGFnIjoiIn0%3D",
     }
 
@@ -77,13 +79,13 @@ def ambil_data_sigap_instansi(url, retries=3, timeout=10):
 
     # Masukkan cookies yang relevan dari browser Anda ke sini
     cookies = {
-        "XSRF-TOKEN": "eyJpdiI6Iit6MnRLallCWHg1UnJhZUhpUmhISkE9PSIsInZhbHVlIjoiUElJbFAxNDZhanU3SEplMk5aeVlLV0RnYlJtL0FKdWNydHlhSVNkNmxlQTV3NU5mR3pwS0hWUnBxVUNpb3ZQY3UyYXZtTURsdHUvc3RIZUVpek9JY0JhVTN0NkgwNWRxcXIxVlhXTjZpeHZYeXFkK1ZYR3JUQzljQkQxUXc5bmYiLCJtYWMiOiJhMDIxMDk4NmE4ODZmZWFmMzFjMzMzNTRkZGUxMDVjNGM0MzI0M2YxMmRiM2YxNzY2YWNiYjc2OWUyYTIzZDgwIiwidGFnIjoiIn0%3D",
+        "XSRF-TOKEN": "eyJpdiI6InZ6VHZEZmc2bHk5bzZEd1FwTFJQa1E9PSIsInZhbHVlIjoiMmZYK3VsYnRJYy9wUFJXbGU1TDNWMWpRNWxyOWtQZEJ3N2VLWXVPcGFsYzFwTWtUM0ZWVkxqTHJpUVVsMkhzbzgzVit6OE1KODZWWkJTVlBsOHhvTDQzT0ZwL21XSWJQYTFnM3grZFlkdS9VMUl5dUNuRG1TZWVVenRBdkFaUFIiLCJtYWMiOiI1YmExZjVjYjRmNjEwNjM4OTg1YTE2Y2E2MGMwYWI0ZmM5YjljZTgwZGJhNDljZjNkYjY5NGQ2NzE2YTczYmFjIiwidGFnIjoiIn0%3D",
         "_ga": "GA1.1.140722331.1727057868",
         "_ga_JQ088T32QP": "GS1.1.1727061610.2.1.1727061629.0.0.0",
         "_ga_VNWN27RPNX": "GS1.3.1727061611.2.0.1727061611.60.0.0",
-        "ceri_session": "eyJpdiI6ImlvdCtIMEVESllBc0xJM0Y4RnJENUE9PSIsInZhbHVlIjoiQy9MRGt3ODA5OGlKR21ZUEdnWVhFeldGVzgxZFBONzdMNU5vbHpNdlNOcWoyYk5zY0RDMGVNbHdXQUdDQkJIaDVBRUgvUTRuaE1zckYzMDBKajJVKzJFTWxXL2R0ZGpKR1J0VGFrZVRZQStJRVlmQzJUd1NydStQazA5SDJwUDgiLCJtYWMiOiIxMjY2NDdkNzI3NTgwYWU5OThmYzRjYmIwZDU4NGU4MGJjNDQwNjU1Mzk2MjZlZmVmNDU4MDRiNDg1OTZiMDA2IiwidGFnIjoiIn0%3D",
+        "ceri_session": "eyJpdiI6IllEZjcyMXVkQ1hzWE9YUmdDRnFoUGc9PSIsInZhbHVlIjoiQkZQRUdHVWh4a2NIamhYanNXUFhVTDZwUWdPby9YK3Z0WnpGQThaZGFDQUhyUmJ3dzl6S3NjUVZKSGhOcWtkQ2x4dnRkNzFWMzdwbFp6dzNDaEMvbjBTd1R4czk0UTRtMkt0NW1NMUwwZ3M5d1VXVEZCNnAvbE52SXVHWFVCa24iLCJtYWMiOiI3ZDEwMWQzOGQ1ZDBjZWRkMGQ0NmE5ZTQ4ZmVkZTY1M2U5NzM0Y2Q3ODA3ZmMwNTA0MjYzY2Q0OGNiOTA4NWI5IiwidGFnIjoiIn0%3D",
         "cookiesession1": "678B28C4BA1B09254D21278D87A606A5",
-        "jr_cookie": "98122d81101bed08eedde6cea31edd67",
+        "jr_cookie": "c686aabd2eea2ae0eedde6ceb475e267",
         "remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d": "eyJpdiI6IlEyVEJBcW9Za2tCUFNJWFpvV2VUNGc9PSIsInZhbHVlIjoiM0NwSGwwdUVwbEVhVGtKVm5hdGJSbUxmSlpUQ0JjZkZPL0pFbEE5K3c3WmtPM3RpZHpkaUlhaldXMThRVlQzNnNKNVcxdTdaTDBMdWttOTlOUDd0cmwvQm50WXBiN2lMVlpSV213Umw2d0lpOUNaSzI4TjNoQ0xraENqRmRON3haWU1ROHVrZTlvZTdxdGM2SUtDME5BPT0iLCJtYWMiOiI0MWUxNTY1MjE5YzBiOTAxZmQwYzcwM2RkMzQwMTViYmU0NDI1OTg5MjY1NDgzZDdmYTliNTMwZWMxNDQwOGUyIiwidGFnIjoiIn0%3D",
     }
 
