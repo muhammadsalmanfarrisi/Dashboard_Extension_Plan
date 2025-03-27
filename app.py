@@ -24,7 +24,7 @@ app.secret_key = "supersecretkey"  # Gantilah dengan kunci rahasia yang lebih am
 app.jinja_env.filters["format_rupiah"] = format_rupiah  # Daftarkan filter
 
 
-def ambil_data(url, retries=3, timeout=10):
+def ambil_data(url, retries=3):
     session = requests.Session()
 
     # Masukkan cookies yang relevan dari browser Anda ke sini
@@ -46,7 +46,7 @@ def ambil_data(url, retries=3, timeout=10):
     }
 
     try:
-        response = session.get(url, headers=headers, timeout=timeout)
+        response = session.get(url, headers=headers)
         if response.status_code == 200:
             try:
                 data = response.json()
@@ -74,7 +74,7 @@ def ambil_data(url, retries=3, timeout=10):
     return None  # Kembalikan None jika terjadi error
 
 
-def ambil_data_sigap_instansi(url, retries=3, timeout=10):
+def ambil_data_sigap_instansi(url, retries=3):
     session = requests.Session()
 
     # Masukkan cookies yang relevan dari browser Anda ke sini
@@ -96,7 +96,7 @@ def ambil_data_sigap_instansi(url, retries=3, timeout=10):
     }
 
     try:
-        response = session.get(url, headers=headers, timeout=timeout)
+        response = session.get(url, headers=headers)
 
         if response.status_code == 200:
             try:
